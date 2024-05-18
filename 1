@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+class Distance {
+private:
+    int feet;
+    float inches;
+public:
+    Distance() : feet(0), inches(0.0) {}
+    Distance(int ft, float in) : feet(ft), inches(in) {}
+    void getdist() {
+        cout << "Enter feet: ";
+        cin >> feet;
+        cout << "Enter inches: ";
+        cin >> inches;
+    }
+    void showdist() const {
+        cout << feet << "\'-" << inches << "\"" << endl;
+    }
+    void add_dist(const Distance& d2) {
+        feet += d2.feet;
+        inches += d2.inches;
+        if (inches >= 12.0) {
+            inches -= 12.0;
+            feet++;
+        }
+    }
+    void div_dist(Distance d2, int divisor) {
+        float fltfeet = d2.feet + d2.inches / 12.0;
+        fltfeet /= divisor;
+        feet = int(fltfeet);
+        inches = (fltfeet - feet) * 12.0;
+    }
+    int getFeet() const {
+        return feet;
+    }
+    float getInches() const {
+        return inches;
+    }
+};
+int main() {
+    const int MAX = 100; 
+    Distance distArray[MAX];  
+    Distance totalDist; 
+    int n;  
+    cout << "How many distances do you want to enter (up to " << MAX << ")? ";
+    cin >> n;
+    if (n > MAX) {
+        cout << "You can only enter up to " << MAX << " distances." << endl;
+        return 1;
+    }
+    for (int i = 0; i < n; i++) {
+        cout << "Enter distance " << (i + 1) << ":" << endl;
+        distArray[i].getdist();
+        totalDist.add_dist(distArray[i]);
+    }
+    Distance avgDist;
+    avgDist.div_dist(totalDist, n);
+    cout << "\nThe average distance is: ";
+    avgDist.showdist();
+    return 0;
+}
